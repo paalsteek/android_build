@@ -108,7 +108,6 @@ TARGET_GLOBAL_CFLAGS += \
 			-funwind-tables \
 			-fstack-protector \
 			-Wa,--noexecstack \
-			-Werror=format-security \
 			-D_FORTIFY_SOURCE=1 \
 			-fno-short-enums \
 			$(arch_variant_cflags)

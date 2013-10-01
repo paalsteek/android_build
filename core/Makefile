@@ -615,7 +615,8 @@ $(if $(BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE),$(hide) echo "vendor_fs_type=$(BOARD_
 $(if $(BOARD_VENDORIMAGE_PARTITION_SIZE),$(hide) echo "vendor_size=$(BOARD_VENDORIMAGE_PARTITION_SIZE)" >> $(1))
 $(if $(INTERNAL_USERIMAGES_SPARSE_EXT_FLAG),$(hide) echo "extfs_sparse_flag=$(INTERNAL_USERIMAGES_SPARSE_EXT_FLAG)" >> $(1))
 $(if $(mkyaffs2_extra_flags),$(hide) echo "mkyaffs2_extra_flags=$(mkyaffs2_extra_flags)" >> $(1))
-$(hide) echo "selinux_fc=$(SELINUX_FC)" >> $(1)
+# Engle, 添加SELINUX编译条件
+$(if $(filter true, $(strip $(HAVE_SELINUX))), echo "selinux_fc=$(SELINUX_FC)" >> $(1))
 $(if $(2),$(hide) $(foreach kv,$(2),echo "$(kv)" >> $(1);))
 endef
 
@@ -1407,7 +1408,8 @@ CM_TARGET_PACKAGE := $(PRODUCT_OUT)/cm-$(CM_VERSION).zip
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 bacon: otapackage
 ifneq ($(TARGET_CUSTOM_RELEASETOOL),)
-	$(error TARGET_CUSTOM_RELEASETOOL is deprecated)
+	@echo -e ${CL_YLW}"Running custom releasetool..."${CL_RST}
+	$(hide) OTAPACKAGE=$(INTERNAL_OTA_PACKAGE_TARGET) APKCERTS=$(APKCERTS_FILE) $(TARGET_CUSTOM_RELEASETOOL)
 endif
 	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CM_TARGET_PACKAGE)
 	$(hide) $(MD5SUM) $(CM_TARGET_PACKAGE) > $(CM_TARGET_PACKAGE).md5sum

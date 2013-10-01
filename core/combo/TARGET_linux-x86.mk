@@ -89,7 +89,6 @@ TARGET_GLOBAL_CFLAGS += \
 			-O2 \
 			-Ulinux \
 			-Wa,--noexecstack \
-			-Werror=format-security \
 			-D_FORTIFY_SOURCE=1 \
 			-Wstrict-aliasing=2 \
 			-fPIC -fPIE \
